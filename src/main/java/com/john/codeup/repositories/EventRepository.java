@@ -13,7 +13,8 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 	List<Event> findAllByOrderByEventNameAsc();
 	List<Event> findAllByOrderByEventDateAsc();
 	
-	
+	List<Event> findByEventNameContaining(String search);
+
 	Event findByEventName(String newEvent);
 	
 	

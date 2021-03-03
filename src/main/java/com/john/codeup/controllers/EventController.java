@@ -2,6 +2,7 @@ package com.john.codeup.controllers;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.john.codeup.models.Event;
@@ -172,6 +174,45 @@ public class EventController {
 		x.addAttribute("messagesTextArr", messagesTextArr);
 		return "show.jsp";
 	}
+//	CREATE MESSAGE ---------------------------------------
+	@PostMapping("/createMessage/{id}")
+	public String createMessage(@Valid @ModelAttribute("message") Message message,
+						BindingResult result, @PathVariable Long id, Model x,
+						HttpSession s) {
+		System.out.println(message.getText());
+		
+		Event e = eventService.findEvent(id);
+		if (result.hasErrors()) {
+			x.addAttribute("event", e);
+			x.addAttribute("allEventAttendees", e.getAttendees());
+			return "/show.jsp";
+		}
+//		save message
+		
+//		e.getEventMessages().add(message);
+//		messageService. save?
+//		eventService.updateEvent(e);
+		
+		
+		Long user_id = (Long) s.getAttribute("userId");
+		User u = userService.findUserById(user_id);
+		String u_firstName = u.getFirstName();
+		
+		
+		Date now = new Date();
+		
+		System.out.println(now.toString());
+		System.out.println(message.getCreatedAt()); //NULL it hasn't been created yet!!!
+		
+		String thisMessage = now.toString() +" "+ message.getText() + " by: " + u_firstName;
+		System.out.println(thisMessage);
+		
+		
+		messageService.createMessage(message);
+		
+		
+		return "redirect:/show/" +id;
+	}
 	
 //	DELETE ------------------------------------
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
@@ -189,5 +230,58 @@ public class EventController {
 		return "redirect:/events";
 	}
 	
+//	==================================
+//	search artists method
+	@PostMapping("/search")
+	public String searchArtist(@ModelAttribute("event") Event event, 
+								@RequestParam("query") String query,
+								Model x, HttpSession session) {
+		List<Event> foundEvents = eventService.findByEventNameContaining(query);
+//		if (foundEvents.isEmpty()) {
+//			System.out.println("EMPTY");
+//		}
+		x.addAttribute("noEventsFoundByQuery", query);
+		x.addAttribute("foundEvents", foundEvents);
+		
+		
+		
+		
+		Long id = (Long) session.getAttribute("userId");
+
+		User thisUser = userService.findUserById(id);
+		x.addAttribute("user", thisUser);
+		
+		
+//		add ALL events to model
+//		List<Event> allEvents = eventService.allEvents();
+//		List<Event> allEvents = eventService.findAllByOrderByEventNameAsc();
+		List<Event> allEvents = eventService.findAllByOrderByEventDateAsc();
+		x.addAttribute("allEvents", allEvents);
+		
+//		add all SAME LOCATION events as USER
+		String user_location = thisUser.getLocation();
+		List<Event> sameLocationAsUser = eventService.findByEventLocationIs(user_location);
+		x.addAttribute("sameLocationAsUser", sameLocationAsUser);
+		
+//		NOT the same location
+		List<Event> notSameLocationAsUser = eventService.findByEventLocationIsNot(user_location);
+		x.addAttribute("notSameLocationAsUser", notSameLocationAsUser);
+		
+		
+		event.setPrivateEvent(false);
+		
+		
+		
+		
+		return "events.jsp";
+//		rA.addFlashAttribute("foundSongs", songs);
+//		return "redirect:/search/" + query;
+	}
+	
+//	CLEAR search results =============================================
+	@GetMapping("/clear")
+	public String clearResults() {
+		return "redirect:/events";
+	}
 	
 }

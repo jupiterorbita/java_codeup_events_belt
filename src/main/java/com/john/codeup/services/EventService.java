@@ -15,6 +15,11 @@ public class EventService {
 	@Autowired
 	private EventRepository eventRepository;
 
+//	return all events from string
+//  Return all songs by an artist
+	public List<Event> findByEventNameContaining(String search){
+		return eventRepository.findByEventNameContaining(search);
+	}
 //	sameLocationAsUser
 	public List<Event> findByEventLocationIs(String user_location) {
 //		List<Event> e = eventRepository.findByEventLocationIs(user_location);

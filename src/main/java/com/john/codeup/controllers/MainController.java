@@ -47,6 +47,9 @@ public class MainController {
 //		NOT the same location
 		List<Event> notSameLocationAsUser = eventService.findByEventLocationIsNot(user_location);
 		x.addAttribute("notSameLocationAsUser", notSameLocationAsUser);
+		
+		
+		event.setPrivateEvent(false);
 		return "events.jsp";
 	}
 	return "redirect:/";

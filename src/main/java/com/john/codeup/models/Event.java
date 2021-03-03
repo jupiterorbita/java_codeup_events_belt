@@ -39,6 +39,8 @@ public class Event {
     @NotBlank(message ="event name cannot be blank" )
     private String eventName;
     
+    private Boolean privateEvent;
+    
     @Future
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date eventDate;
@@ -82,6 +84,14 @@ public class Event {
 		this.updatedAt = new Date();
 	}
 //	-----------------------------
+
+	public Boolean getPrivateEvent() {
+		return privateEvent;
+	}
+
+	public void setPrivateEvent(Boolean privateEvent) {
+		this.privateEvent = privateEvent;
+	}
 
 	public Long getId() {
 		return id;
