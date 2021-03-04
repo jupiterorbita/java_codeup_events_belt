@@ -32,13 +32,13 @@ form {
 		
 
 	<a href="/events">back</a> | <a href="/logout">logout</a>
-	<h1> <c:out value="${user.firstName}"/> | Profile </h1>
+	<h1> <c:out value="${user.firstName}"/> | Profile | <a href="/user/edit/${user.id}">Edit</a></h1>
 	<hr/>
-	<p>your bio:</p>
-	<p>First Name: </p>
-	<p>Last Name: </p>
-	<p>email:</p>
-	<p>location: </p>
+	<p>your bio: ${user.bio }</p>
+	<p>First Name: ${user.firstName }</p>
+	<p>Last Name: ${user.lastName }</p>
+	<p>email: ${user.email }</p>
+	<p>location: ${user.location }</p>
 	<p></p>
 	
 	<h3>events i'm going to:</h3>
@@ -56,16 +56,19 @@ form {
 			</tr>
 		</thead>
 		<tbody>
+<%-- 			<c:forEach items="${user.getEvents()}" var="ue"> --%>
+			<c:forEach items="${userEvents}" var="ue">
 			<tr>
-				<td>event id</td>
-				<td>event name</td>
-				<td>date</td>
-				<td>attendees</td>
-				<td>location</td>
-				<td>Host</td>
-				<td>PRIVATE?</td>
+				<td>${ue.id}</td>
+				<td>${ue.eventName}</td>
+				<td>${ue.eventDate }</td>
+				<td>${ue.attendees.size()}</td>
+				<td>${ue.eventLocation}</td>
+				<td>${ue.host.firstName}</td>
+				<td>${ue.privateEvent }</td>
 				<td>actions</td>
 			</tr>
+			</c:forEach>
 			
 		</tbody>
 	</table>

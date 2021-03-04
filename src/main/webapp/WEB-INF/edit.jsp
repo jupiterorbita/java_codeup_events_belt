@@ -26,7 +26,7 @@
   position:absolute;
   top: 0; bottom: 0; left: 0; right: 0;
   margin: auto;
-  height: 300px; /*requires explicit height*/
+  height: 400px; /*requires explicit height*/
 
 }
 .red {
@@ -80,6 +80,11 @@
 	        	<form:option value="C" label="C"/>
 	        	</form:select>
 			</p>
+	        <p>
+		       	<form:label path="privateEvent">Is this a Private Event?</form:label><br/>
+		       	<form:radiobutton path="privateEvent" value="1"/> Private <i class="em em-dark_sunglasses" aria-role="presentation" aria-label=""></i><br>
+		       	<form:radiobutton path="privateEvent" value="0"/> Public <i class="em em-loudspeaker" aria-role="presentation" aria-label="PUBLIC ADDRESS LOUDSPEAKER"></i><br>
+        	</p>
 			<div class="flex">
 				
 			<input class="btn btn btn-outline-secondary" type="submit" value="Save"/> <i class="em em-bird" aria-role="presentation" aria-label="BIRD"></i>

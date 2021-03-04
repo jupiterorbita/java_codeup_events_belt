@@ -59,6 +59,17 @@
   display:inline-block;
   vertical-alight: top;
   }
+.profile_pic_sm {
+	width: 50px;
+  border-radius: 50px;
+/*   box-shadow: 1px 1px 10px lightgrey; */
+/*   border: 2px solid grey; */
+  
+  }
+ td.no-padding {
+ 	padding: 5px;
+ 	width:50px;
+  }
   
 /* body { padding-top: 70px; } */
 </style>
@@ -68,43 +79,7 @@
 <body>
 <div class="container">	
 		
-	<nav class="navbar navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand">{ CodeUp }</a>
-    
-    <div class="d-flex">
-    <div class="collapse navbar-collapse" id="navbarScroll">
-      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Link
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
-        </li>
-      </ul>
-    
-    
-    
-    <span class=" me-2">logged in as ${user.firstName}</span>
-<!--       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
-<!--       <button class="btn btn-outline-success" type="submit">Search</button> -->
-    </div>
-  </div>
-</nav>
+ <img class="profile_pic_sm" src="/images/blank.png"> 
 		
 		
 			
@@ -159,7 +134,8 @@
         <tbody>
           <c:forEach items="${foundEvents}" var="e">
             <tr>
-              <td><c:out value="${e.id }" /></td>
+              <td> 
+              <c:out value="${e.id }" /></td>
               <td>
               <c:set var="prive" value="${e.privateEvent}" />
                 <c:choose>
@@ -306,7 +282,9 @@
             		<tr>
             	</c:otherwise>
             </c:choose>
-              <td><c:out value="${e.id }" /></td>
+              <td class="no-padding">
+<%--               <c:out value="${e.id }" /> --%>
+              <img class="profile_pic_sm" src="/images/blank.png"> </td>
               <td>
               <c:set var="prive" value="${e.privateEvent}" />
                 <c:choose>
@@ -467,25 +445,25 @@
         <form:errors path="host" />
         <p>
           <form:label path="eventName">eventName</form:label>
-          <form:errors path="eventName" />
           <form:input path="eventName" />
+          <form:errors path="eventName" class="text-danger"/>
         </p>
         <p>
           <form:label path="eventDate">eventDate</form:label>
-          <form:errors path="eventDate" />
           <form:input type="date" path="eventDate" />
+          <form:errors path="eventDate" class="text-danger"/>
         </p>
         <p>
           <%-- <c:out value="${errorLocation }"></c:out> --%>
 
           <form:label path="eventLocation">eventLocation:</form:label>
-          <form:errors path="eventLocation" />
           <form:select path="eventLocation">
             <option value="" label="select a location" disabled selected />
             <form:option value="A" label="A" />
             <form:option value="B" label="B" />
             <form:option value="C" label="C" />
           </form:select>
+          <form:errors path="eventLocation" class="text-danger" />
         </p>
         
         <p>

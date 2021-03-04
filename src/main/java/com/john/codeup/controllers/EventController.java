@@ -55,11 +55,19 @@ public class EventController {
 //								field	errorCode		defaultMessage
     	  	result.rejectValue("eventName", "error.event", "Can't use the same event name.");
 		}
+		
+		Date eD = event.getEventDate();
+		System.out.println(eD);
+		if (eD == null) {
+    	  	result.rejectValue("eventDate", "error.event", "Please set a date in the future!");
+
+		}
+		
 		if (result.hasErrors()) {			
-			if (event.getEventLocation() == null) {
-////										field	errorCode		defaultMessage
-				result.rejectValue("eventLocation", "error.event", "select a location");
-			}
+//			if (event.getEventLocation() == null) {
+//////										field	errorCode		defaultMessage
+//				result.rejectValue("eventLocation", "error.event", "select a location");
+//			}
 			
 			Long id = (Long) session.getAttribute("userId");
 			User thisUser = userService.findUserById(id);
@@ -86,6 +94,7 @@ public class EventController {
 //		u.addEvent(e);
 //	
 //		userService.updateUser(u);
+
 		
 		eventService.createEvent(event);
 		return "redirect:/events";

@@ -48,6 +48,8 @@ public class User {
     @NotEmpty(message ="choose a location")
     private String location;
     
+    private String bio;
+    
     @Past
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date dob;
@@ -92,6 +94,16 @@ public class User {
         this.updatedAt = new Date();
     }
 //    ---------------------------
+
+    
+    
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
 
 	public List<Event> getEvents() {
 		return events;
