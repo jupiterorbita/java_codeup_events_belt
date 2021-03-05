@@ -5,6 +5,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<meta charset="ISO-8859-1">
+<!-- https://emoji-css.afeld.me/ -->
+<link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
 <style>
 thead {
   background-color: rgb(109, 112, 119);
@@ -20,25 +26,98 @@ form {
   padding: 5px;
   width: 50%;
 }
+.profile_pic_sm {
+	width: 50px;
+  border-radius: 50px;
+/*   box-shadow: 1px 1px 10px lightgrey; */
+/*   border: 2px solid grey; */
+  }
+.profile_pic_big {
+	width: 240px;
+  	box-shadow: 2px 2px 20px grey;
+  	margin: 10px;
+  }
+  
+a {
+  text-decoration: none;
+}
+.wrap{
+/* 	outline: 1px solid grey; */
+/* 	background-color: lightgreen; */
+	display: flex;
+/* 	align-items: flex-start; */
+/* 	justify-content: center; */
+}
+.left {
+	
+/* 	background-color: lightblue; */
+}
+.right {
+	padding: 20px;
+/* 	background-color: orange; */
+	font-size: 22pt;
+}
+.bio {
+	outline: 1px solid grey;
+	background-color: lightgrey;
+}
 </style>
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-<meta charset="ISO-8859-1">
 <title>${user.firstName}'s Profile!</title>
 </head>
 <body>
 	<div class="container">
+			<h2> 
+		<a href="/user/${user.id}"> <c:out value="${user.firstName}"/> 
+	
 		
-
-	<a href="/events">back</a> | <a href="/logout">logout</a>
-	<h1> <c:out value="${user.firstName}"/> | Profile | <a href="/user/edit/${user.id}">Edit</a></h1>
+		 <c:set var="img" value="${user.profilepic.getPic() }"/>
+		 <c:choose>
+			<c:when test="${img == '' }" > 	
+		 		<img class="profile_pic_sm" src="/images/blank.png"> 
+		 	</c:when>
+		 	<c:otherwise>
+				 <img class="profile_pic_sm" src="${user.profilepic.getProfileImagePath()}"> 
+		 	</c:otherwise>
+		 </c:choose>
+		</a> 
+	</h2>
+	<a href="/events"><i class="em em-arrow_backward" aria-role="presentation" aria-label="BLACK LEFT-POINTING TRIANGLE"></i> back</a> | <a href="/logout">logout</a>
 	<hr/>
-	<p>your bio: ${user.bio }</p>
-	<p>First Name: ${user.firstName }</p>
-	<p>Last Name: ${user.lastName }</p>
-	<p>email: ${user.email }</p>
-	<p>location: ${user.location }</p>
+
+		 
+	<h1> 		 
+	  Profile | <a href="/user/edit/${user.id}">Edit</a>
+  	</h1>
+  	
+  	
+  	
+  	
+	<div class="wrap">
+		<div class="left">
+		 <c:set var="imgBig" value="${user.profilepic.getPic() }"/>
+		 <c:choose>
+			<c:when test="${imgBig == '' }" > 	
+		 		<img class="profile_pic_big" src="/images/blank.png"> 
+		 	</c:when>
+		 	<c:otherwise>
+				 <img class="profile_pic_big" src="${user.profilepic.getProfileImagePath()}"> 
+		 	</c:otherwise>
+		 </c:choose>
+		</div>
+		
+		<div class="right">
+			<p>First Name: ${user.firstName }</p>
+			<p>Last Name: ${user.lastName }</p>
+			<p>email: ${user.email }</p>
+			<p>location: ${user.location }</p>
+		</div>
+	</div>
+  	
+  	<div class="bio">
+		<p>your bio: ${user.bio }</p>
+  	</div>
+  	
+
 	<p></p>
 	
 	<h3>events i'm going to:</h3>

@@ -5,15 +5,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<!-- jquery for image preview -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/myjs.js"></script>
 <style>
 .span {
 	font-size: 9pt;
 	color:red;
 }
+body {
+	background-color: rgb(238, 238, 238);
+}
 </style>
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 <meta charset="ISO-8859-1">
 <title>Create a CodeUp Account</title>
 </head>
@@ -27,7 +34,9 @@
 	
 	<p><form:errors class="span" path="user.*"/></p>
 		
-	<form:form method="POST" action="/register" modelAttribute="user">
+	<form:form method="POST" action="/register" modelAttribute="user"
+      		enctype="multipart/form-data">
+      		
       		<p>
             <form:label path="firstName">First Name:</form:label>
 <%-- 			        <form:errors path="firstName"/> --%>
@@ -65,10 +74,23 @@
             <form:label path="passwordConfirmation">Password Confirm:</form:label>
             <form:password path="passwordConfirmation"/>
         </p>
+           <p>
+           <label for="profilepic">upload a profile pic</label>
+           <input type="file" name="fileImage" id="fileImage" accept="image/png, image/jpeg, image/jpg" />
+           </p>
+           <p>
+           		<img id="thumbnail" src="/images/blank.png" style="width:50px;" alt="profile pic preview" />
+           </p>
+           
            
            
        <input type="submit" value="Register!"/>
 	</form:form>
 	</div>
+	
+<!-- 	jquery for image preview -->
+<script type="text/javascript">
+
+</script>
 </body>
 </html>

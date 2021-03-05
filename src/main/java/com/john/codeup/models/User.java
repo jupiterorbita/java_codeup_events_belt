@@ -3,6 +3,7 @@ package com.john.codeup.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -66,6 +68,12 @@ public class User {
     
     private Boolean isAdmin = false;
     
+    @Column(length=45, nullable=true)
+    private String profilePicString;
+    
+    @OneToOne(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    private Profilepic profilepic;
+    
 //	 ------------ MANY : MANY ----------------------------
 	 @ManyToMany(fetch = FetchType.LAZY)
 	 @JoinTable(
@@ -97,6 +105,22 @@ public class User {
 
     
     
+	public String getProfilePicString() {
+		return profilePicString;
+	}
+
+	public void setProfilePicString(String profilePicString) {
+		this.profilePicString = profilePicString;
+	}
+
+	public Profilepic getProfilepic() {
+		return profilepic;
+	}
+
+	public void setProfilepic(Profilepic profilepic) {
+		this.profilepic = profilepic;
+	}
+
 	public String getBio() {
 		return bio;
 	}

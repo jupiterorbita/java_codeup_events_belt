@@ -3,6 +3,7 @@ package com.john.codeup.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -37,6 +39,7 @@ public class Event {
     private Date updatedAt;
     
     @NotBlank(message ="event name cannot be blank" )
+    @Column(length = 50, nullable = false, unique=true)
     private String eventName;
     
     private Boolean privateEvent;
@@ -49,6 +52,8 @@ public class Event {
 //    @NotBlank(message = "not blank")
     @Size(min=1, message = "M select a location")
     private String eventLocation;
+    
+
     
 	//	 ------- MANY : MANY -------------------------
     @ManyToMany(fetch = FetchType.LAZY)
@@ -84,6 +89,7 @@ public class Event {
 		this.updatedAt = new Date();
 	}
 //	-----------------------------
+
 
 	public Boolean getPrivateEvent() {
 		return privateEvent;

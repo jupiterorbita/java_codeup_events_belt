@@ -41,7 +41,7 @@ public class EventController {
 	@PostMapping("/createEvent/")
 	public String createEvent(@Valid @ModelAttribute("event") Event event,
 						BindingResult result, HttpSession session, Model x,
-						RedirectAttributes flash) {
+						RedirectAttributes rA) {
 		
 //		******* BRENDAS WAY UNSTEAD OF HIDDEN INPUT ***********
 //		Long id = (Long) session.getAttribute("userId");
@@ -87,22 +87,19 @@ public class EventController {
 		}
 		
 //		Long uId = (Long) session.getAttribute("userId");
-//
 //		User u = userService.findUserById(uId);
-//		
 //		Event e = eventService.createEvent(event);
 //		u.addEvent(e);
-//	
 //		userService.updateUser(u);
 
-		
 		eventService.createEvent(event);
+		rA.addFlashAttribute("message_create", "you created an event!");
 		return "redirect:/events";
 	}
 	
 //	JOIN -----------------------------------
 	@GetMapping("/join/{id}")
-	public String join(@PathVariable Long id, HttpSession session) {
+	public String join(@PathVariable Long id, HttpSession session, RedirectAttributes rA) {
 //  i want the user to join this event!
 		Long user_id = (Long) session.getAttribute("userId");
 		User u = userService.findUserById(user_id);
@@ -110,38 +107,50 @@ public class EventController {
 		Event e = eventService.findEvent(id);
 		e.getAttendees().add(u);
 		eventService.updateEvent(e);
+		rA.addFlashAttribute("message_join", "you have joined an event!");
 		return "redirect:/events";
 	}
 //	CANCEL --- removed from attendees---------
 	@GetMapping("/remove/{id}")
-	public String remove(@PathVariable Long id, HttpSession session) {
-		
+	public String remove(@PathVariable Long id, HttpSession session, RedirectAttributes rA) {
 //		get user from session
 		Long user_id = (Long) session.getAttribute("userId");
 		User u = userService.findUserById(user_id);
-		
 		Event e = eventService.findEvent(id);
-//		List<User> attendees = e.getAttendees();
-		
-//		eventService.removeByAttendeesIs(u);
-		
-//	    for (int i = 0; i < attendees.size(); i++) {
-//	        if (Objects.equals(u, attendees.get(i))) {
-//	        	attendees.remove(i);
-//	        }
-//	    }
+
 		e.getAttendees().remove(u);
-//	    attendees.remove(u);
 		
 	    eventService.updateEvent(e);
-	    
-//		for(User x : attendees) {
-//			System.out.println(x.getFirstName());
-//			System.out.println("-----");
-//		}
-//		
-//		System.out.println("this user to remove = " + u.getFirstName());
+	    rA.addFlashAttribute("message_removed", "you have been removed from an event!");
 		return "redirect:/events";
+	}
+	
+//	JOIN -----------------------------------
+	@GetMapping("/show/join/{id}")
+	public String showJoin(@PathVariable Long id, HttpSession session, RedirectAttributes rA) {
+//  i want the user to join this event!
+		Long user_id = (Long) session.getAttribute("userId");
+		User u = userService.findUserById(user_id);
+//		this event---
+		Event e = eventService.findEvent(id);
+		e.getAttendees().add(u);
+		eventService.updateEvent(e);
+//		rA.addFlashAttribute("message_join", "you have joined an event!");
+		return "redirect:/show/"+ id;
+	}
+//	CANCEL --- removed from attendees---------
+	@GetMapping("/show/remove/{id}")
+	public String showRremove(@PathVariable Long id, HttpSession session, RedirectAttributes rA) {
+//		get user from session
+		Long user_id = (Long) session.getAttribute("userId");
+		User u = userService.findUserById(user_id);
+		Event e = eventService.findEvent(id);
+		
+		e.getAttendees().remove(u);
+		
+		eventService.updateEvent(e);
+//		rA.addFlashAttribute("message_removed", "you have been removed from an event!");
+		return "redirect:/show/"+ id;
 	}
 	
 	
@@ -156,22 +165,25 @@ public class EventController {
 	}
 	@PutMapping("/edit/{id}")
 	public String update(@Valid @ModelAttribute Event event, 
-						BindingResult result) {
+						BindingResult result, @PathVariable Long id) {
 		if (result.hasErrors()) {
 			return "/edit.jsp";
 		}
+		Event e = eventService.findEvent(id);
+		List<User> event_attendees = e.getAttendees();
+		event.setAttendees(event_attendees);
 		eventService.updateEvent(event);
 		return "redirect:/events";
 	}
 	
 //	SHOW EVENT --------- MESSAGES -----------------------
 	@GetMapping("/show/{id}")
-	public String show(@ModelAttribute("message") Message message, @PathVariable Long id, Model x) {
+	public String show(@ModelAttribute("message") Message message, @PathVariable Long id, Model x, HttpSession s) {
 		
-//		ArrayUtils.reverse(int[] array)
-//
-//
-//		Collections.reverse(Arrays.asList(yourArray));
+		Long user_id = (Long) s.getAttribute("userId");
+		if (user_id != null ) {
+			User thisUser = userService.findUserById(user_id);
+			x.addAttribute("user", thisUser);
 		
 		Event e = eventService.findEvent(id);
 		
@@ -182,6 +194,8 @@ public class EventController {
 		x.addAttribute("allEventAttendees", e.getAttendees());
 		x.addAttribute("messagesTextArr", messagesTextArr);
 		return "show.jsp";
+		}
+		return "redirect:/";
 	}
 //	CREATE MESSAGE ---------------------------------------
 	@PostMapping("/createMessage/{id}")
@@ -196,13 +210,7 @@ public class EventController {
 			x.addAttribute("allEventAttendees", e.getAttendees());
 			return "/show.jsp";
 		}
-//		save message
-		
-//		e.getEventMessages().add(message);
-//		messageService. save?
-//		eventService.updateEvent(e);
-		
-		
+
 		Long user_id = (Long) s.getAttribute("userId");
 		User u = userService.findUserById(user_id);
 		String u_firstName = u.getFirstName();
@@ -227,15 +235,16 @@ public class EventController {
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
 	public String destoy(@PathVariable Long id,
 						RedirectAttributes rA) {
-		rA.addFlashAttribute("deleted", "you deleted an event!");
 		
 		eventService.deleteEvent(id);
+		rA.addFlashAttribute("deleted", "you deleted an event!");
 		return "redirect:/events";
 	}
 	@GetMapping("/delete_url/{id}")
 	public String del(@PathVariable Long id, RedirectAttributes rA) {
-		rA.addFlashAttribute("deleted", "you deleted an event!");
+		
 		eventService.deleteEvent(id);
+		rA.addFlashAttribute("deleted", "you deleted an event!");
 		return "redirect:/events";
 	}
 	
@@ -251,19 +260,12 @@ public class EventController {
 //		}
 		x.addAttribute("noEventsFoundByQuery", query);
 		x.addAttribute("foundEvents", foundEvents);
-		
-		
-		
-		
+
 		Long id = (Long) session.getAttribute("userId");
 
 		User thisUser = userService.findUserById(id);
 		x.addAttribute("user", thisUser);
-		
-		
-//		add ALL events to model
-//		List<Event> allEvents = eventService.allEvents();
-//		List<Event> allEvents = eventService.findAllByOrderByEventNameAsc();
+
 		List<Event> allEvents = eventService.findAllByOrderByEventDateAsc();
 		x.addAttribute("allEvents", allEvents);
 		
@@ -278,13 +280,9 @@ public class EventController {
 		
 		
 		event.setPrivateEvent(false);
-		
-		
-		
-		
+
 		return "events.jsp";
-//		rA.addFlashAttribute("foundSongs", songs);
-//		return "redirect:/search/" + query;
+
 	}
 	
 //	CLEAR search results =============================================
