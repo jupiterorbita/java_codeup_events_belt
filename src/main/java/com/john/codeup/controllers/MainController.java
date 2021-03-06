@@ -55,6 +55,59 @@ public class MainController {
 	return "redirect:/";
 }
 	
+//	SORTING ---------------------------------------------------------------
+//  		eventName ASC ------------------------------------------------
+	@GetMapping("/sortby/eventNameAsc")
+	public String sortByEventNameAsc(HttpSession session, Model x,
+			@ModelAttribute("event") Event event) {
+	
+		Long id = (Long) session.getAttribute("userId");
+		if (id != null ) {
+			User thisUser = userService.findUserById(id);
+			x.addAttribute("user", thisUser);
+			
+			List<Event> allEvents = eventService.findAllByOrderByEventNameAsc();
+			x.addAttribute("allEvents", allEvents);
+			event.setPrivateEvent(false);
+			return "events.jsp";
+		}
+		return "redirect:/";
+	}
+//  		eventName Desc ------------------------------------------------
+	@GetMapping("/sortby/eventNameDesc")
+	public String sortByEventNameDesc(HttpSession session, Model x,
+			@ModelAttribute("event") Event event) {
+		
+		Long id = (Long) session.getAttribute("userId");
+		if (id != null ) {
+			User thisUser = userService.findUserById(id);
+			x.addAttribute("user", thisUser);
+			
+			List<Event> allEvents = eventService.findAllByOrderByEventNameDesc();
+			x.addAttribute("allEvents", allEvents);
+			event.setPrivateEvent(false);
+			return "events.jsp";
+		}
+		return "redirect:/";
+	}
+//  		DATE DESC ------------------------------------------------
+	@GetMapping("/sortby/dateDesc")
+	public String sortByDateDesc(HttpSession session, Model x,
+			@ModelAttribute("event") Event event) {
+		
+		Long id = (Long) session.getAttribute("userId");
+		if (id != null ) {
+			User thisUser = userService.findUserById(id);
+			x.addAttribute("user", thisUser);
+			
+			List<Event> allEvents = eventService.findAllByOrderByEventDateDesc();
+			x.addAttribute("allEvents", allEvents);
+			event.setPrivateEvent(false);
+			return "events.jsp";
+		}
+		return "redirect:/";
+	}
+	
 	
 	
 }

@@ -75,7 +75,7 @@
   
   }
  td.no-padding {
- 	padding: 5px;
+ 	padding: 2px;
  	width:50px;
   }
   
@@ -106,6 +106,32 @@ a {
 	display: inline-block;
 	vertical-align: top;
 	width: 75%;
+}
+.purple {
+	color: purple;
+}
+.sorting {
+	background-color: teal;
+	paddding: 10px;
+	border: 1px solid grey;
+	border-radius: 15px;
+	text-align: center;
+}
+.sorting a {
+	color: white;
+	
+}
+.sorting a:visited {
+	color: white;
+}
+a.white {
+	color: white;
+}
+a.white:visited {
+	color: white;
+}
+thead tr td {
+	font-size: 20px;
 }
 </style>
 <meta charset="ISO-8859-1">
@@ -151,11 +177,10 @@ a {
       	
       	
       	
-      	
-      	
     <c:set var="foundEs" value="${foundEvents.size()}" />
       	
       	
+
       	
       <c:choose>
       	
@@ -305,19 +330,54 @@ a {
       <h4>all events!</h4>
 		<span class="message"><strong> ${message_join } ${message_create } ${deleted } ${message_removed } </strong></span>
       
+      
+      
+<!--       sorting ========================================== -->
+<!--        	<div class="sorting"> -->
+<!--        		<a href="/sortby/eventNameAsc">   			 -->
+<!-- 	      		sortBy Event NAME ASC <i class="em em-arrow_double_up" aria-role="presentation" aria-label="BLACK UP-POINTING DOUBLE TRIANGLE"></i> |  -->
+<!--        		</a> -->
+<!--        		<a href="/sortby/eventNameDesc">   			 -->
+<!-- 	      		sortBy Event NAME DESC <i class="em em-arrow_double_down" aria-role="presentation" aria-label="BLACK DOWN-POINTING DOUBLE TRIANGLE"></i> -->
+<!--        		</a> -->
+<!--        		<a href="/events">   			 -->
+<!-- 	      		<i class="em em-arrow_double_up" aria-role="presentation" aria-label="BLACK UP-POINTING DOUBLE TRIANGLE"></i> -->
+<!--        		</a> -->
+<!--        		<a href="/sortby/eventDateDesc">   			 -->
+<!-- 	      		sortBy Date Desc <i class="em em-arrow_double_up" aria-role="presentation" aria-label="BLACK UP-POINTING DOUBLE TRIANGLE"></i> -->
+<!--        		</a> -->
+<!--       	</div> -->
+<!--       	sorting ======================================== -->
+      
+      
       <p></p>
       <table class="table table-hover table-responsive table-bordered">
         <thead class="thead-dark">
           <tr>
             <td></td>
-            <td>Event NAME</td>
-            <td>date</td>
+            <td>Event NAME             	
+            	<a class="white" href="/sortby/eventNameAsc">   			
+	      		<i class="em em-arrow_double_up" aria-role="presentation" aria-label="BLACK UP-POINTING DOUBLE TRIANGLE"></i> | 
+       			</a>
+       			<a class="white" href="/sortby/eventNameDesc">   			
+	      		<i class="em em-arrow_double_down" aria-role="presentation" aria-label="BLACK DOWN-POINTING DOUBLE TRIANGLE"></i>
+       			</a>
+            </td>
+            <td>date
+            	<a href="/events">   			
+	      		<i class="em em-arrow_double_up" aria-role="presentation" aria-label="BLACK UP-POINTING DOUBLE TRIANGLE"></i>
+       			</a>
+            	<a href="/sortby/dateDesc">   			
+	      		<i class="em em-arrow_double_down" aria-role="presentation" aria-label="BLACK DOWN-POINTING DOUBLE TRIANGLE"></i>
+       			</a>
+            </td>
             <td>attendees</td>
             <td>location</td>
             <td>Host</td>
             <td>Private</td>
             <td>actions</td>
           </tr>
+
         </thead>
         <tbody>
           <c:forEach items="${allEvents}" var="e">
@@ -376,9 +436,14 @@ a {
                   --%>
                   <c:set var="attendees_size" value="${e.attendees.size() }" />
                   <c:choose>
+                    <c:when test="${ attendees_size >= 6}">
+                      <span class="purple"><b> ${e.attendees.size() } </b></span>
+                    </c:when>
                     <c:when test="${ attendees_size >= 4}">
                       <span class="red"><b> ${e.attendees.size() } </b></span>
                     </c:when>
+                    
+                    
                     <c:otherwise> ${e.attendees.size() } </c:otherwise>
                   </c:choose>
 
@@ -434,9 +499,9 @@ a {
            		<a href="/delete_url/${e.id}" class="btn btn-sm btn-outline-danger">DELETE</a>&nbsp;&nbsp;
                 </c:if>
 
-                <c:if test="${e.attendees.size() < 6 }" >
                 	
 	                <c:if test="${e.attendees.contains(user)}"> (JOINED)&nbsp;&nbsp; <a class="btn btn-sm btn-outline-danger" href="/remove/${e.id}">Cancel</a> </c:if>
+                <c:if test="${e.attendees.size() < 6 }" >
 	                <c:if test="${e.attendees.contains(user) == false && prive != true}"> <a class="btn btn-sm btn-outline-success" href="/join/${e.id}">Join</a> </c:if>
 	                <c:if test="${prive == true && user.id == e.host.id}"> yes</c:if>
                 </c:if>

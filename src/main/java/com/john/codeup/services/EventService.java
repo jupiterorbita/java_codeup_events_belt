@@ -14,6 +14,22 @@ public class EventService {
 
 	@Autowired
 	private EventRepository eventRepository;
+	
+//	SORTING-------------------------------------------
+//	event name ASC
+	public List<Event> findAllByOrderByEventNameAsc(){
+		return eventRepository.findAllByOrderByEventNameAsc();
+	}	
+//	event name DESC
+	public List<Event> findAllByOrderByEventNameDesc(){
+		return eventRepository.findAllByOrderByEventNameDesc();
+	}	
+//	READ ALL DATE DESC
+	public List<Event> findAllByOrderByEventDateDesc(){
+		return eventRepository.findAllByOrderByEventDateDesc();
+	}
+	
+//	--------------------------------------------------
 
 //	return all events from string
 //  Return all songs by an artist
@@ -38,10 +54,10 @@ public class EventService {
 	public List<Event> findAllByOrderByEventDateAsc(){
 		return eventRepository.findAllByOrderByEventDateAsc();
 	}
-//	READ ALL NAME ASC
-	public List<Event> findAllByOrderByEventNameAsc(){
-		return eventRepository.findAllByOrderByEventNameAsc();
-	}
+////	READ ALL NAME ASC
+//	public List<Event> findAllByOrderByEventNameAsc(){
+//		return eventRepository.findAllByOrderByEventNameAsc();
+//	}
 //	find unique name
 	public Event findByEventName(String newEventName) {
 		return eventRepository.findByEventName(newEventName);

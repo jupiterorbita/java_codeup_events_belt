@@ -70,6 +70,10 @@ public class UserController {
 		String tempP = u.getPassword();
 		user.setPassword(tempP);
 		
+//		re add that users' events they are going to
+		List<Event> thisUserEvents = u.getEvents();
+		user.setEvents(thisUserEvents);
+		
 		userService.updateUser(user);
 		return "redirect:/user/" + id;
 	}

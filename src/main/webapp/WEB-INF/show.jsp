@@ -126,8 +126,13 @@ a {
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at <fmt:formatDate pattern = "E M dd yyyy" value = "${event.eventDate }" />
 		with (${allEventAttendees.size()}) attendees!
 	
-        <c:if test="${event.attendees.contains(user)}"> (JOINED)&nbsp;&nbsp; <a class="btn btn-sm btn-danger" href="/show/remove/${event.id}">Cancel</a> </c:if>
-        <c:if test="${event.attendees.contains(user) == false && prive != true}"> <a class="btn btn-sm btn-success" href="/show/join/${event.id}">Join</a> </c:if>
+             <c:if test="${event.attendees.contains(user)}"> (JOINED)&nbsp;&nbsp; <a class="btn btn-sm btn-outline-danger" href="/show/remove/${event.id}">Cancel</a> </c:if>
+             <c:if test="${event.attendees.size() < 6 }" >
+              <c:if test="${event.attendees.contains(user) == false && prive != true}"> <a class="btn btn-sm btn-outline-success" href="/show/join/${event.id}">Join</a> </c:if>
+              <c:if test="${prive == true && user.id == event.host.id}"> yes</c:if>
+             </c:if>
+<%--         <c:if test="${event.attendees.contains(user)}"> (JOINED)&nbsp;&nbsp; <a class="btn btn-sm btn-danger" href="/show/remove/${event.id}">Cancel</a> </c:if> --%>
+<%--         <c:if test="${event.attendees.contains(user) == false && prive != true}"> <a class="btn btn-sm btn-success" href="/show/join/${event.id}">Join</a> </c:if> --%>
 	</div>	
 	
 	
@@ -155,7 +160,15 @@ a {
 							<tr>
 								<td> 
 								
-								<img class="profile_pic_sm" src="${a.profilepic.getProfileImagePath()}">  
+									 <c:set var="imgI" value="${a.profilepic.getPic() }"/>
+									 <c:choose>
+										<c:when test="${imgI == '' }" > 	
+									 		<img class="profile_pic_sm" src="/images/blank.png"> 
+									 	</c:when>
+									 	<c:otherwise>
+											 <img class="profile_pic_sm" src="${a.profilepic.getProfileImagePath()}"> 
+									 	</c:otherwise>
+									 </c:choose>
 								
 								</td>
 								<td> 

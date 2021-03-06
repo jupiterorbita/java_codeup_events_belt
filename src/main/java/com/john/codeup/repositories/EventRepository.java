@@ -11,7 +11,10 @@ import com.john.codeup.models.Event;
 public interface EventRepository extends CrudRepository<Event, Long> {
 	List<Event> findAll();
 	List<Event> findAllByOrderByEventNameAsc();
+	List<Event> findAllByOrderByEventNameDesc();
+	
 	List<Event> findAllByOrderByEventDateAsc();
+	List<Event> findAllByOrderByEventDateDesc();
 	
 	List<Event> findByEventNameContaining(String search);
 
